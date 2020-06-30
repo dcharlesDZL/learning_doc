@@ -124,8 +124,8 @@ func (sh *scheduler) runSched() {
 case w := <-sh.newWorkers:
 			sh.schedNewWorker(w)
 ```
-如果配置了sealer config 中的 p1 p2 c2 unseal 服务,则依次添加到localtask中,同样的,若想实现调度其中的一个或是某几个服务,在sectorstorage.New的初始化中相应的项置false.
-此时,调度器根据前面的配置添加一个worker,函数返回manger.
+如果配置了sealer config中的 p1 p2 c2 unseal 服务,则依次添加到localtask中,同样的,若想实现调度其中的一个或是某几个服务,在sectorstorage.New的初始化中相应的项置false.
+此时,调度器根据前面的配置添加worker config,函数返回manger.
 这时,manager允许调度之前所配置的任务类型(默认fetch p1 p2 c1 c2 unseal,全部接受调度).
 go m.sched.runSched 详解:
 此时调度器循环并阻塞来接收调度请求,分别有newWorker workerClosing schedule workerFree closing五种调度请求.
