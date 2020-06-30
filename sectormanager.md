@@ -89,6 +89,36 @@ m.sched.newWorkers <- &workerHandle{
 	active:    &activeResources{},
 }
 ```
+```go
+func (sh *scheduler) runSched() {
+	go sh.runWorkerWatcher()
+
+	for {
+		select {
+		case w := <-sh.newWorkers:
+			sh.schedNewWorker(w)
+		case wid := <-sh.workerClosing:
+			sh.schedDropWorker(wid)
+		case req := <-sh.schedule:
+			scheduled, err := sh.maybeSchedRequest(req)
+			if err != nil {
+				req.respond(err)
+				continue
+			}
+			if scheduled {
+				continue
+			}
+
+			heap.Push(sh.schedQueue, req)
+		case wid := <-sh.workerFree:
+			sh.onWorkerFreed(wid)
+		case <-sh.closing:
+			sh.schedClose()
+			return
+		}
+	}
+}
+```
 此时调度器接收到sh.newWorkers通道传来的数据时候,调用sh.schedNewWorker(w)
 ```go
 case w := <-sh.newWorkers:
@@ -129,33 +159,3 @@ go m.sched.runSched 详解:
 - 当有释放worker调度请求时, 调用sh.onWorkerFreed(wid)函数,此时若worker已经调度过,则调度队列移除该worker,队列长度减1.
 - 当有关闭调度器请求时,调用sh.schedClose()函数,此时关闭调度器.
 
-```go
-func (sh *scheduler) runSched() {
-	go sh.runWorkerWatcher()
-
-	for {
-		select {
-		case w := <-sh.newWorkers:
-			sh.schedNewWorker(w)
-		case wid := <-sh.workerClosing:
-			sh.schedDropWorker(wid)
-		case req := <-sh.schedule:
-			scheduled, err := sh.maybeSchedRequest(req)
-			if err != nil {
-				req.respond(err)
-				continue
-			}
-			if scheduled {
-				continue
-			}
-
-			heap.Push(sh.schedQueue, req)
-		case wid := <-sh.workerFree:
-			sh.onWorkerFreed(wid)
-		case <-sh.closing:
-			sh.schedClose()
-			return
-		}
-	}
-}
-```
