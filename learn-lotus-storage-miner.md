@@ -154,7 +154,8 @@ func createStorageMiner(ctx context.Context, api lapi.FullNode, peerid peer.ID, 
 ./lotus-storage-miner run --api 2345 --nosync --enable-gpu-proving
 ```
 首先获取full node API,同lotus daemon 版本进行比较,并检查storage repo路径.
-miner API连接远程地址,获取repo的endpoint
+miner API连接远程地址,获取repo的endpoint.
+开启rpc服务,注册minerAPI,监听远程发来的服务请求. 例如监听来自http://ip/remote 的请求.
 
 
 
