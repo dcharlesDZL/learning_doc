@@ -131,7 +131,7 @@ go m.sched.runSched 详解:
 此时调度器循环并阻塞来接收调度请求,分别有newWorker workerClosing schedule workerFree closing五种调度请求.
 - 当有newWorker调度请求时,调度器执行调度一个新worker.
 - 当有workerClosing调度请求时,调度器根据此时丢掉一个worker.
-- 当有调度请求时,将请求添加至调度队列中.即当有调度器需要调度p1 p2 c1 c2等任务时,此时调用 m.sched.Schedule 函数,将workerRequest的结构体指针传入sh.schedule的通道中,此时调用sh.maybeSchedRequest(req)函数,将调度请求入队.调用maybeSchedRequest时,首先查找可以接收请求的workerID,查询添加到scheduler的worker list(即sh.workers),将可接受调度的worker添加到acceptable中.如果存在可调度的worker,那么对其进行比较,最终分配acceptable[0]的worker进行调度,调用sh.assignWorker函数
+- 当有调度请求时,将请求添加至调度队列中.即当有调度器需要调度p1 p2 c1 c2等任务时,此时调用 m.sched.Schedule 函数,将workerRequest的结构体指针传入sh.schedule的通道中,此时调用sh.maybeSchedRequest(req)函数,将调度请求入队.调用maybeSchedRequest时,首先查找可以接收请求的workerID,查询添加到scheduler的worker list(即sh.workers),将可接受调度的worker添加到acceptable中.如果存在可调度的worker,那么对其进行比较,最终分配acceptable[0]的worker进行调度,调用sh.assignWorker函数.
 	```go
 		if len(acceptable) > 0 {
 		{
