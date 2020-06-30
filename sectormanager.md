@@ -122,7 +122,7 @@ func (sh *scheduler) runSched() {
 此时调度器接收到sh.newWorkers通道传来的数据时候,调用sh.schedNewWorker(w)
 ```go
 case w := <-sh.newWorkers:
-			sh.schedNewWorker(w)
+	sh.schedNewWorker(w)
 ```
 如果配置了sealer config中的 p1 p2 c2 unseal 服务,则依次添加到localtask中,同样的,若想实现调度其中的一个或是某几个服务,在sectorstorage.New的初始化中相应的项置false.
 此时,调度器根据前面的配置添加worker config,函数返回manger.
