@@ -1,4 +1,4 @@
-sector manager在miner初始化时创建,
+创建sector manager
 ```go
 smgr, err := sectorstorage.New(ctx, lr, stores.NewIndex(), &ffiwrapper.Config{
 				SealProofType: spt,
