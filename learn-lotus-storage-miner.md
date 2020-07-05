@@ -4,7 +4,7 @@
 ./lotus wallet new bls
 ```
 ```sh
-./lotus-storage-miner init --actor=t0118166 --owner=t3sjtzv6snp2ecc2mb2skuhgbb7b4ry7eizri7kgztpkfeg7bqt7y2sfpbfvkbssj4nhrl2bsbow7oqzrf57cq --genesis-miner
+./lotus-storage-miner init --actor=t0118166 --owner=t3sjtzv6snp2ecc2mb2skuhgbb7b4ry7eizri7kgztpkfeg7bqt7y2sfpbfvkbssj4nhrl2bsbow7oqzrf57cq
 ```
 <!-- ```sh
 ./lotus-storage-miner init --sector-size 2KiB --genesis-miner --no-local-storage --gas-price 100 --create-worker-key
