@@ -43,3 +43,11 @@ func (a *activateResources) utilization () {
 ```
 返回cpu, memMin, memMax中占用最高的数值,即为此worker的最大占用率.worker之间比较选择最大占用率小的worker,即最终按照可用资源由大到小进行worker排序.
 并最终选择可用资源最大的worker来处理当前服务.
+
+
+
+调度器只对worker状态进行管理,即当一个worker可供调度时,调度器首先根据spt计算需要的资源大小,预先准备需要的资源(内存等)大小,若无报错,则对当前worker的活动资源添加上当前task需要的资源数量.此时worker解锁,重新处于free状态,与此同时,worker去执行任务.当worker处理结束时,
+```go
+err = req.work(req.ctx, w.w)
+```
+将resources 释放.此时将查看调度队列中是否存在需要调度的任务.worker处理任务则是异步的.
