@@ -46,8 +46,4 @@ func (a *activateResources) utilization () {
 
 
 
-调度器只对worker状态进行管理,即当一个worker可供调度时,调度器首先根据spt计算需要的资源大小,预先准备需要的资源(内存等)大小,若无报错,则对当前worker的活动资源添加上当前task需要的资源数量.此时worker解锁,重新处于free状态,与此同时,worker去执行任务.当worker处理结束时,
-```go
-err = req.work(req.ctx, w.w)
-```
-将resources 释放.此时将查看调度队列中是否存在需要调度的任务.worker处理任务则是异步的.
+调度器只对worker状态进行管理,即当一个worker可供调度时,调度器首先根据spt计算需要的资源大小,预先准备需要的资源(内存等)大小,若无报错,则对当前worker的活动资源添加上当前task需要的资源数量.此时worker解锁,重新处于free状态,之后worker继续在调度队列中查找可以执行的任务,并将该任务需要的资源添加到该worker活动中的资源中去.与此同时,起一个协程去执行任务.当worker处理(err = req.work(req.ctx, w.w))结束时,将resources 释放.此时将查看调度队列中是否存在需要调度的任务.worker处理任务则是异步的.
